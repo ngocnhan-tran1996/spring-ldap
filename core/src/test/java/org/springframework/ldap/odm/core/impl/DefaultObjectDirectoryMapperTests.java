@@ -110,12 +110,8 @@ public class DefaultObjectDirectoryMapperTests {
 
 	@Test
 	public void testInvalidType() {
-		try {
-			this.tested.manageClass(UnitTestPersonWithInvalidFieldType.class);
-		}
-		catch (InvalidEntryException expected) {
-			assertThat(expected.getMessage()).contains("Missing converter from");
-		}
+		assertThatExceptionOfType(InvalidEntryException.class)
+			.isThrownBy(() -> this.tested.manageClass(UnitTestPersonWithInvalidFieldType.class));
 	}
 
 	@Test
@@ -134,7 +130,8 @@ public class DefaultObjectDirectoryMapperTests {
 	@Test
 	public void testIndexedDnAttributesRequiresThatAllAreIndexed() {
 		assertThatExceptionOfType(MetaDataException.class)
-			.isThrownBy(() -> this.tested.manageClass(UnitTestPersonWithIndexedAndUnindexedDnAttributes.class));
+			.isThrownBy(() -> this.tested.manageClass(UnitTestPersonWithIndexedAndUnindexedDnAttributes.class))
+			.withMessageContaining("Missing converter from");
 	}
 
 	@Test
